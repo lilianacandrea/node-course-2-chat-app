@@ -15,30 +15,16 @@ var io = socketIO(server);
 
 app.use(express.static(publicPath));
 
-// Connection event: this lets you listen for a new connection meaning tat a client connected to the server and it lets you do something when that connection comes.
-// In order to do something you provide a callaback fuction as the second argument and this callback func. is going to get called with a socket.
 io.on('connection', (socket) => {
   console.log('New user connected');
 
-  // socket.emit('newEmail', {
-  //   from: 'mike@example.com',
-  //   text: 'Hey. What is going on.',
-  //   createdAt: 123
-  // });
-
-  // socket.on('createEmail', (newEmail) => {
-  //   console.log('createEmail', newEmail);
-  // });
-
-  socket.emit('newMessage', {
-    from: 'john',
-    text: 'see you then',
-    createdAt: 123
-  });
-
-
   socket.on('createMessage', (message) => {
     console.log('createMessage', message);
+    io.emit('newMessage', {
+      from: message.from,
+      text: message.text,
+      createdAt: new Date().getTime()
+    });
   });
 
   socket.on('disconnect', (socket) => {
