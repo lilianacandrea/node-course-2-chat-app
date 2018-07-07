@@ -4,7 +4,7 @@ const express = require('express');
 const socketIO = require('socket.io');
 
 const {generateMessage, generateLocationMessage} = require('./utils/message');
-
+const {isRealString} = require('./utils/validation');
 // This is the path that we'll provide to Express static middleware.
 const publicPath = path.join(__dirname, '../public');
 const port = process.env.PORT || 3000;
@@ -20,11 +20,25 @@ app.use(express.static(publicPath));
 io.on('connection', (socket) => {
   console.log('New user connected');
 
-  //socket.emit from Admin text: welcome to the chat app
-  socket.emit('newMessage', generateMessage('Admin', 'Welcome to the chat app'));
+  socket.on('join', (params, callback) => {
+    if (!isRealString(params.name) || !isRealString(params.room)) {
+      callback('Name and room are required');
+    }
 
-  //socket.broadcast.emit from Admin text: new user joined
-  socket.broadcast.emit('newMessage', generateMessage('Admin', 'New user joined'));
+    socket.join(params.room);
+
+    // socket.leave('the office fans');
+
+    //io.emit -> io.to('the office fans').emit
+    //socket.broadcast.emit  -> socket.broadcast.to('the office fans').emit
+    //socket.emit ->
+
+    socket.emit('newMessage', generateMessage('Admin', 'Welcome to the chat app'));
+
+    socket.broadcast.to(params.room).emit('newMessage', generateMessage('Admin', `${params.name} has joined`));
+
+    callback();
+  });
 
 //use acknowledgement as a second arg.
   socket.on('createMessage', (message, callback) => {
