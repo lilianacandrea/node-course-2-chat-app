@@ -16,6 +16,19 @@ var users = new Users();
 
 app.use(express.static(publicPath));
 
+app.get('/rooms',(req,res)=>{
+  var availableRooms = [];
+  var rooms = io.sockets.adapter.rooms;
+  if (rooms) {
+    for (var room in rooms) {
+      if (!rooms[room].sockets.hasOwnProperty(room)) {
+        availableRooms.push(room);
+      }
+    }
+  }
+  res.send(availableRooms);
+});
+
 io.on('connection', (socket) => {
   console.log('New user connected');
 

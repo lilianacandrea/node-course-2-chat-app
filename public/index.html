@@ -21,13 +21,17 @@
       </div>
       <div class="form-field">
         <label>Room name</label>
-        <input type="text" name="room" list="roomList" required autocomplete="off"/>
+        <input type="text" id="room-name" name="room" list="roomList" required autocomplete="off"/>
+        <datalist id="roomList"></datalist>
       </div>
       <div class="form-field">
         <button>Join</button>
       </div>
    </form>
   </div>
+
+  <script src="/js/libs/jquery-3.3.1.min.js"></script>
+  <script src="/js/index.js"></script>
 </body>
 
 </html>
