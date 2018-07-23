@@ -33,7 +33,7 @@ io.on('connection', (socket) => {
   console.log('New user connected');
 
   socket.on('join', (params, callback) => {
-    params.room = params.room.toLowerCase(); 
+    params.room = params.room.toLowerCase();
     if (!isRealString(params.name) || !isRealString(params.room)) {
       return callback('Name and room name are required.');
     }
@@ -60,7 +60,7 @@ io.on('connection', (socket) => {
       io.to(user.room).emit('newMessage', generateMessage(user.name, message.text));
     }
     callback();
-
+  });
 
   socket.on('createLocationMessage', (coords) => {
     var user = users.getUser(socket.id);

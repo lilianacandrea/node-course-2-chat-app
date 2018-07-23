@@ -39,13 +39,12 @@ class Users {
   getUserList (room) {
     var users = this.users.filter((user) => user.room === room);
     var namesArray = users.map((user) => user.name);
+    return namesArray;
   }
     isNameTaken(name,room){
       var user = this.users.filter(user => (name === user.name && room === user.room))[0];
       return user?true:false;
     }
-//    return namesArray;
-
 }
 
 module.exports = {Users};
