@@ -21,6 +21,10 @@ function scrollToBottom() {
   };
 };
 
+function capitalizeFirstLetter(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+}
+
 socket.on('connect', function () {
  var params = jQuery.deparam(window.location.search);
 
@@ -29,7 +33,7 @@ socket.on('connect', function () {
      alert(err);
      window.location.href = '/';
    } else {
-     console.log('No error');
+     document.title = `${capitalizeFirstLetter(params.room)} | ChatApp`;
    }
  });
 });
