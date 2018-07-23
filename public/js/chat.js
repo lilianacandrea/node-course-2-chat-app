@@ -1,5 +1,10 @@
 var socket = io();
 
+var messageCounter = 0;
+var favicon=new Favico({
+  animation:'popFade'
+});
+
 function scrollToBottom() {
   // selectors
   var messages = jQuery('#messages');
@@ -54,6 +59,7 @@ socket.on('newMessage', function (message) {
 
   jQuery('#messages').append(html);
   scrollToBottom();
+  displayMessageCountInTab();
 });
 
 socket.on('newLocationMessage', function (message) {
@@ -68,6 +74,7 @@ socket.on('newLocationMessage', function (message) {
 
   jQuery('#messages').append(html);
   scrollToBottom();
+  displayMessageCountInTab();
 });
 
 // iau textul din input fild
@@ -102,4 +109,21 @@ locationButton.on('click', function () {
     locationButton.removeAttr('disabled').text('Send location');
     alert('Unable to fetch location.');
   });
+});
+
+function displayMessageCountInTab(){
+  if(!document.hasFocus()){
+    favicon.badge(++messageCounter);
+  }
+};
+
+function clearMessageCount(){
+  messageCounter=0;
+  favicon.badge(messageCounter);
+};
+
+$(window).focus(function(e){
+  if(messageCounter>0){
+    clearMessageCount();
+  }
 });
